@@ -2,7 +2,7 @@ class Solution {
   public:
   // use a 2 pointer and basically "bubble" (swap)
   // zeros until the end
-  void moveZeroes(vector<int>& nums) {
+  void moveZeroesBubble(vector<int>& nums) {
     if(nums.size() < 2)
       return;
 
@@ -17,6 +17,15 @@ class Solution {
         swap(nums[a],nums[b]);
       }
       a++; b = a + 1;
+    }
+  }
+
+  void moveZeroes(vector<int>& nums) {
+    int lastNonZeroFoundAt = 0;   
+    for (int cur = 0; cur < nums.size(); ++cur) {
+      if (nums[cur] != 0) {
+        swap(nums[lastNonZeroFoundAt++], nums[cur]);
+      }
     }
   }
 };
