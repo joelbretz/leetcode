@@ -37,30 +37,21 @@ class Solution {
       indegree[a] += 1;
     }
     //printAdj(adjList, indegree);
-   
-    // sort nodes by indegree
-    vector<pair<int,int>> nodeDegrees(numCourses, {0,0}); // { nodeNo, indegree}
+  
+    queue<int> q;
     for(int i = 0; i < numCourses; ++i) {
-      nodeDegrees[i] = {i, indegree[i]};
+      if(indegree[i] == 0)
+        q.push(i);
     }
-    sort(nodeDegrees.begin(), nodeDegrees.end(), bySecond);
     
-    vector<bool> visited(numCourses, false);
-    // iterate through nodes with <=zero indegrees, decrement indegrees
-    // of nodes they are adjacent to. if any indegree > 0 at the end. fail
-    bool removed = true;
-    while(removed) {
-      removed = false;
-      for(int i = 0; i < numCourses; ++i) { 
-        //cout << "node " << i << " has indegree " << indegree[i] << ", visited=" << visited[i] << endl;
-        if(indegree[i] == 0 && visited[i] == false) { 
-          visited[i] = true;
-          for(auto adj : adjList[i]) {
-            //cout << "  reduce indegree of " << adj << endl;
-            indegree[adj] -= 1;
-            removed = true;
-          }
-        }
+    while(!q.empty()) {
+      int node = q.front();
+      q.pop();
+      // order.push_back(node)
+      for(auto adj : adjList[node]) {
+        indegree[adj] -= 1;
+        if(indegree[adj] == 0)
+          q.push(adj);
       }
     }
     for(auto in : indegree) {
